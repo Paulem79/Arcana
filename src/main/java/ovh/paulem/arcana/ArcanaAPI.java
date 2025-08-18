@@ -27,14 +27,19 @@ public class ArcanaAPI<P extends JavaPlugin> {
         getPlugin().getLogger().info("ArcanaAPI initialized.");
     }
 
-    public void loadConfig(Class<? extends ConfigData> configClass, @Nullable ConfigurationSection config) {
+    /**
+     * Loads the config data from the given class and config.
+     * @param configClass The config class to load.
+     * @param config The configuration section to load from, or null to use the default spigot configuration.
+     */
+    public<C extends ConfigData> C loadConfig(Class<C> configClass, @Nullable ConfigurationSection config) {
         if (!configClass.isAnnotationPresent(Config.class)) {
             throw new IllegalArgumentException("This class isn't annotated with @Config!");
         }
 
         ConfigurationSection section = config != null ? config : getPlugin().getConfig();
 
-        ConfigData instance;
+        C instance;
         try {
             instance = configClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
@@ -61,6 +66,8 @@ public class ArcanaAPI<P extends JavaPlugin> {
                 getPlugin().getLogger().log(Level.WARNING, "Cannot set config's field '" + field.getName() + "'", e);
             }
         }
+
+        return instance;
     }
 
     private Object extractValue(ConfigurationSection section, String path, Field field) {
