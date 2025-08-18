@@ -12,6 +12,6 @@ public class ArcanaAPI<P extends JavaPlugin> {
     }
 
     public void init() {
-
+        getPlugin().getLogger().info("ArcanaAPI initialized.");
     }
 }
