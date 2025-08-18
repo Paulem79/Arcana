@@ -35,6 +35,7 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(devJavaVersion))
 
     withSourcesJar()
+    withJavadocJar()
 }
 
 tasks.withType<JavaCompile>().configureEach {
