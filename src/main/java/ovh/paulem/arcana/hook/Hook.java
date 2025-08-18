@@ -17,7 +17,7 @@ public abstract class Hook<H extends Hook<H, C, T>, C, T> {
         this.hooks = hooks;
     }
 
-    public H get(Supplier<T> supplier) {
-        return (H) hooks.get(supplier.get());
+    public C get(Supplier<T> supplier) {
+        return hooks.get(supplier.get()).get();
     }
 }
