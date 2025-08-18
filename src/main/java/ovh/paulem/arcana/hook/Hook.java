@@ -4,20 +4,19 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import ovh.paulem.arcana.ArcanaAPI;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
-public abstract class Hook<H extends Hook<H, C, T>, C, T> {
+public abstract class Hook<H, K> {
     @Getter(value = AccessLevel.PROTECTED)
     private final ArcanaAPI<?> api;
-    private final Map<T, Supplier<C>> hooks;
+    private final HookCondition<K, Supplier<H>> hooks;
 
-    public Hook(ArcanaAPI<?> api, Map<T, Supplier<C>> hooks) {
+    public Hook(ArcanaAPI<?> api, HookCondition<K, Supplier<H>> hooks) {
         this.api = api;
         this.hooks = hooks;
     }
 
-    public C get(Supplier<T> supplier) {
+    public H get(Supplier<K> supplier) {
         return hooks.get(supplier.get()).get();
     }
 }
