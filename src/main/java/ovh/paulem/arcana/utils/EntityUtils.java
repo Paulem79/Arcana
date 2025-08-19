@@ -14,17 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EntityUtils {
-    public static boolean areEquals(@Nullable Entity entity, @Nullable Entity entity1) {
-        if (entity == null || entity1 == null) return false;
-
-        return entity.getUniqueId().equals(entity1.getUniqueId());
-    }
 
     @Nullable
     public static <T extends Entity> T getNearestEntity(@NotNull Entity entity, double dist, Class<T> filterClass) {
         List<T> entities = entity.getNearbyEntities(dist, dist, dist)
                 .stream()
-                .filter(entity1 -> filterClass.isInstance(entity1) && !areEquals(entity1, entity))
+                .filter(entity1 -> filterClass.isInstance(entity1) && !UUIDUtils.areEquals(entity1, entity))
                 .map(entity1 -> (T) entity1)
                 .collect(Collectors.toList());
 
