@@ -9,6 +9,7 @@ import ovh.paulem.arcana.config.ConfigData;
 import ovh.paulem.arcana.config.ConfigEntry;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -61,6 +62,11 @@ public class ArcanaAPI<P extends JavaPlugin> {
 
             try {
                 field.setAccessible(true);
+
+                if (Modifier.isFinal(field.getModifiers())) {
+                    throw new IllegalStateException("The config field '" + field.getName() + "' is final and so cannot be modified! Nag " + getPluginAuthors() + " about this.");
+                }
+
                 field.set(instance, value);
             } catch (IllegalAccessException e) {
                 getPlugin().getLogger().log(Level.WARNING, "Cannot set config's field '" + field.getName() + "'", e);
@@ -122,5 +128,10 @@ public class ArcanaAPI<P extends JavaPlugin> {
         if (type.isInstance(raw)) return raw;
 
         return null;
+    }
+
+    private String getPluginAuthors() {
+        List<String> authors = getPlugin().getDescription().getAuthors();
+        return authors.isEmpty() ? "N/A" : String.join(", ", authors);
     }
 }
