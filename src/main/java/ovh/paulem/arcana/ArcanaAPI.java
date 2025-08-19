@@ -64,7 +64,8 @@ public class ArcanaAPI<P extends JavaPlugin> {
                 field.setAccessible(true);
 
                 if (Modifier.isFinal(field.getModifiers())) {
-                    throw new IllegalStateException("The config field '" + field.getName() + "' is final and so cannot be modified! Nag " + getPluginAuthors() + " about this.");
+                    getPlugin().getLogger().severe("The config field '" + field.getName() + "' is final and so cannot be modified! Nag " + getPluginAuthors() + " about this.");
+                    continue;
                 }
 
                 field.set(instance, value);
