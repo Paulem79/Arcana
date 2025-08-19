@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":"))
+    implementation(project(":"))
 }
 
 java {
