@@ -18,6 +18,9 @@ import java.util.logging.Level;
 
 public class ArcanaAPI<P extends JavaPlugin> {
     @Getter
+    private static @Nullable ArcanaAPI<? extends JavaPlugin> instance;
+
+    @Getter
     private final P plugin;
 
     public ArcanaAPI(P plugin) {
@@ -25,6 +28,8 @@ public class ArcanaAPI<P extends JavaPlugin> {
     }
 
     public void init() {
+        instance = this;
+
         getPlugin().getLogger().info("ArcanaAPI initialized.");
     }
 

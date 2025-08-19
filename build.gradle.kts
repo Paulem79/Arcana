@@ -4,25 +4,30 @@ plugins {
     `maven-publish`
 }
 
-group = "ovh.paulem"
-version = "1.2.3"
+allprojects {
+    apply(plugin = "java")
 
-repositories {
-    mavenCentral()
-    maven {
-        name = "spigotmc-repo"
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    group = "ovh.paulem"
+    version = "1.2.3"
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = "spigotmc-repo"
+            url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        }
     }
-}
 
-dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
+    dependencies {
+        compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
 
-    compileOnly("org.jetbrains:annotations:26.0.2")
+        compileOnly("org.jetbrains:annotations:26.0.2")
 
-    compileOnly("it.unimi.dsi:fastutil:8.5.16")
-    compileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
+        compileOnly("it.unimi.dsi:fastutil:8.5.16")
+        compileOnly("org.apache.commons:commons-lang3:3.18.0")
+        compileOnly("org.projectlombok:lombok:1.18.38")
+        annotationProcessor("org.projectlombok:lombok:1.18.38")
+    }
 }
 
 val targetJavaVersion = 8
@@ -52,6 +57,8 @@ tasks.processResources {
     }
 }
 
+evaluationDependsOn(":arcana-j17")
+
 publishing {
     repositories {
         maven {
@@ -69,6 +76,14 @@ publishing {
             artifactId = project.name
             version = project.version.toString()
             from(components["java"])
+            // Artefacts Java 17 du sous-projet
+            val j17 = project(":arcana-j17")
+            val j17Jar = j17.tasks.named("jar")
+            val j17Sources = j17.tasks.named("sourcesJar")
+            val j17Javadoc = j17.tasks.named("javadocJar")
+            artifact(j17Jar)
+            artifact(j17Sources)
+            artifact(j17Javadoc)
         }
     }
 }
