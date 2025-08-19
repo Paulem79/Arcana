@@ -8,7 +8,7 @@ allprojects {
     apply(plugin = "java")
 
     group = "ovh.paulem"
-    version = "1.3.1"
+    version = "1.3.0"
 
     repositories {
         mavenCentral()
