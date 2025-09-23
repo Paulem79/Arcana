@@ -21,7 +21,7 @@ allprojects {
     dependencies {
         compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
 
-        compileOnly("org.jetbrains:annotations:26.0.2")
+        compileOnly("org.jetbrains:annotations:26.0.2-1")
 
         compileOnly("it.unimi.dsi:fastutil:8.5.16")
         compileOnly("org.apache.commons:commons-lang3:3.18.0")
