@@ -1,6 +1,6 @@
 plugins {
     java
-    id("xyz.jpenilla.run-paper") version "3.0.0"
+    id("xyz.jpenilla.run-paper") version "3.0.1"
     `maven-publish`
 }
 
