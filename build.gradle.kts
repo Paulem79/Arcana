@@ -25,8 +25,8 @@ allprojects {
 
         compileOnly("it.unimi.dsi:fastutil:8.5.16")
         compileOnly("org.apache.commons:commons-lang3:3.19.0")
-        compileOnly("org.projectlombok:lombok:1.18.42")
-        annotationProcessor("org.projectlombok:lombok:1.18.42")
+        compileOnly("org.projectlombok:lombok:1.18.46")
+        annotationProcessor("org.projectlombok:lombok:1.18.46")
     }
 }
 
