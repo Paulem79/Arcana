@@ -4,7 +4,7 @@ annotations = "26.0.2-1"
 fastutil = "8.5.16"
 commons-lang3 = "3.19.0"
 lombok = "1.18.42"
-run-paper = "3.0.0"
+run-paper = "3.1.0"
 
 [libraries]
 spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
