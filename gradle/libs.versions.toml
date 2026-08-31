@@ -1,0 +1,17 @@
+[versions]
+spigot = "1.21.8-R0.1-SNAPSHOT"
+annotations = "26.0.2-1"
+fastutil = "8.5.16"
+commons-lang3 = "3.19.0"
+lombok = "1.18.42"
+run-paper = "3.0.0"
+
+[libraries]
+spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "fastutil" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+[plugins]
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }

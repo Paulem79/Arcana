@@ -14,12 +14,12 @@ java {
     withJavadocJar()
 }
 
-// Configure classifiers and base names so that this module publishes as ovh.paulem:Arcana:<version>:j17
+// Configure classifiers and base names so that this module publishes as net.paulem:arcana:<version>:j17
 // while avoiding clashes with the root module's standard artifacts.
 val j17Classifier = "j17"
 
 tasks.named<Jar>("jar") {
-    archiveBaseName.set("Arcana")
+    archiveBaseName.set("arcana")
     archiveClassifier.set(j17Classifier)
 }
 
@@ -27,17 +27,17 @@ tasks.named<Jar>("jar") {
 // to prevent overwriting the root project's sources/javadoc artifacts.
 tasks.withType<Jar>().configureEach {
     // Ensure base name alignment
-    if (archiveBaseName.get() != "Arcana") {
-        archiveBaseName.set("Arcana")
+    if (archiveBaseName.get() != "arcana") {
+        archiveBaseName.set("arcana")
     }
 }
 
 tasks.named<Jar>("sourcesJar") {
-    archiveBaseName.set("Arcana")
+    archiveBaseName.set("arcana")
     archiveClassifier.set("${j17Classifier}-sources")
 }
 
 tasks.named<Jar>("javadocJar") {
-    archiveBaseName.set("Arcana")
+    archiveBaseName.set("arcana")
     archiveClassifier.set("${j17Classifier}-javadoc")
 }

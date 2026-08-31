@@ -1,0 +1,32 @@
+package net.paulem.arcana.utils;
+
+import java.util.Optional;
+
+/**
+ * Utility methods for reflectively checking the presence of classes on the classpath.
+ */
+public class ClassUtils {
+    /**
+     * Attempts to retrieve the {@link Class} object for the fully qualified class name provided.
+     *
+     * @param className the fully qualified name of the class to retrieve
+     * @return an {@link Optional} containing the {@link Class} object if found, or an empty {@link Optional} if the class is not found
+     */
+    public static Optional<Class<?>> getClass(String className) {
+        try {
+            return Optional.of(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Checks if the given class is present in the classpath.
+     *
+     * @param className the fully qualified name of the class to check
+     * @return true if the class is present, false otherwise
+     */
+    public static boolean isClassPresent(String className) {
+        return getClass(className).isPresent();
+    }
+}

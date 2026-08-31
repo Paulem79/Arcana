@@ -1,14 +1,16 @@
 plugins {
     java
-    id("xyz.jpenilla.run-paper") version "3.0.0"
+    alias(libs.plugins.run.paper)
     `maven-publish`
 }
+
+val catalogLibs = the<org.gradle.api.artifacts.VersionCatalogsExtension>().named("libs")
 
 allprojects {
     apply(plugin = "java")
 
-    group = "ovh.paulem"
-    version = "0.0.1"
+    group = "net.paulem"
+    version = "0.0.2"
 
     repositories {
         mavenCentral()
@@ -19,14 +21,14 @@ allprojects {
     }
 
     dependencies {
-        compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
+        compileOnly(catalogLibs.findLibrary("spigot-api").get())
 
-        compileOnly("org.jetbrains:annotations:26.0.2-1")
+        compileOnly(catalogLibs.findLibrary("jetbrains-annotations").get())
 
-        compileOnly("it.unimi.dsi:fastutil:8.5.16")
-        compileOnly("org.apache.commons:commons-lang3:3.19.0")
-        compileOnly("org.projectlombok:lombok:1.18.42")
-        annotationProcessor("org.projectlombok:lombok:1.18.42")
+        compileOnly(catalogLibs.findLibrary("fastutil").get())
+        compileOnly(catalogLibs.findLibrary("commons-lang3").get())
+        compileOnly(catalogLibs.findLibrary("lombok").get())
+        annotationProcessor(catalogLibs.findLibrary("lombok").get())
     }
 }
 
@@ -63,8 +65,11 @@ publishing {
     repositories {
         maven {
             name = "paulem"
-            url = uri("https://maven.paulem.ovh/releases")
-            credentials(PasswordCredentials::class)
+            url = uri("https://maven.paulem.net/releases")
+            credentials {
+                username = (findProperty("MAVEN_USERNAME") as String?) ?: System.getenv("MAVEN_USERNAME")
+                password = (findProperty("MAVEN_PASSWORD") as String?) ?: System.getenv("MAVEN_PASSWORD")
+            }
             authentication {
                 create<BasicAuthentication>("basic")
             }
