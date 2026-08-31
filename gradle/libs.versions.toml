@@ -2,7 +2,7 @@
 spigot = "1.21.8-R0.1-SNAPSHOT"
 annotations = "26.0.2-1"
 fastutil = "8.5.16"
-commons-lang3 = "3.19.0"
+commons-lang3 = "3.20.0"
 lombok = "1.18.42"
 run-paper = "3.0.0"
 
