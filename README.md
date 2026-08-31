@@ -58,6 +58,56 @@ numeric types and `boolean`, enums (matched case-insensitively by name), and typ
 these. If a path is missing from the config, the field keeps whatever default value it was initialized
 with in the class. `final` fields cannot be set and are logged as an error instead.
 
+### Initializing ArcanaAPI
+
+Each plugin that wants to use Arcana creates and initializes its own `ArcanaAPI` instance, typically in `onEnable`:
+
+```java
+public class MyPlugin extends JavaPlugin {
+    private ArcanaAPI<MyPlugin> arcanaAPI;
+
+    @Override
+    public void onEnable() {
+        arcanaAPI = new ArcanaAPI<>(this);
+        arcanaAPI.init();
+    }
+}
+```
+
+`ArcanaAPI.getInstance()` also exposes the last-initialized instance as a static singleton, but it is
+**not plugin-scoped** — calling `init()` again (from another plugin, or a reload) overwrites it. Since
+Arcana is meant to be shaded/relocated into each consuming plugin's jar (see Coordinates above), this is
+usually harmless in practice (each plugin gets its own relocated copy of the class, and therefore its own
+static field), but it stops being safe the moment Arcana is ever loaded unshaded/shared across plugins on
+the same server. **Prefer holding the `ArcanaAPI` reference on your plugin instance (as above) and passing
+it explicitly** to anything that needs it (this is what `Hook` already does — it takes an `ArcanaAPI<?>`
+constructor argument rather than reading `getInstance()`), instead of relying on the static getter.
+
+### Accessing loaded config values
+
+`loadConfig` does not cache or own the returned instance — it is a one-shot reflective loader. The plugin
+is responsible for keeping the reference around and exposing it however fits its own code, e.g.:
+
+```java
+public class MyPlugin extends JavaPlugin {
+    @Getter
+    private MyPluginConfig config;
+
+    @Override
+    public void onEnable() {
+        arcanaAPI = new ArcanaAPI<>(this);
+        arcanaAPI.init();
+        config = arcanaAPI.loadConfig(MyPluginConfig.class, null);
+    }
+}
+```
+
+Values are then read directly off that `ConfigData` instance (plain fields, or getters if you annotate
+them, e.g. with Lombok's `@Getter`). To reload after a config file change, call `loadConfig` again (after
+`plugin.reloadConfig()` if reloading from disk) and replace the stored reference — there is currently no
+built-in cache or `reload()` helper on `ArcanaAPI` itself, so re-running `loadConfig` is the supported way
+to refresh values.
+
 ## Building
 
 ```bash

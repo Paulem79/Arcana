@@ -20,6 +20,20 @@ import java.util.logging.Level;
  * Central entry point of the Arcana API for a given plugin.
  * Holds the singleton instance reachable through {@code getInstance()} once {@link #init()} has been called,
  * and provides reflection-based config loading via {@link #loadConfig(Class, ConfigurationSection)}.
+ * <p>
+ * <b>Recommended usage:</b> create and {@link #init()} one instance per plugin (usually in
+ * {@code onEnable}), keep the reference on the plugin instance, and pass it explicitly to anything
+ * that needs it (as {@link net.paulem.arcana.hook.Hook} does) rather than relying on
+ * {@link #getInstance()}. That static getter is a single global slot, not keyed per plugin: a later
+ * {@code init()} call (from another plugin instance, or a reload) silently replaces it. This is
+ * typically harmless because Arcana is meant to be shaded/relocated into each consuming plugin's jar,
+ * giving each one its own copy of this class and therefore its own static field, but it is not safe if
+ * Arcana is ever loaded unshaded/shared across plugins on the same server.
+ * <p>
+ * {@link #loadConfig(Class, ConfigurationSection)} is a one-shot reflective loader: it does not cache
+ * or otherwise own the returned {@link ConfigData} instance. Callers must keep the reference themselves
+ * (e.g. a field on the plugin, exposed through a getter) and call {@code loadConfig} again to refresh
+ * it after a config change; there is no built-in {@code reload()} or per-class cache on this API.
  *
  * @param <P> the type of the plugin this API instance is bound to
  */
